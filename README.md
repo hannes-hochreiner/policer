@@ -1,4 +1,4 @@
-![CI](https://github.com/hannes-hochreiner/policer/workflows/CI/badge.svg)
+[![CI](https://github.com/hannes-hochreiner/policer/actions/workflows/main.yml/badge.svg)](https://github.com/hannes-hochreiner/policer/actions/workflows/main.yml)
 # Policer
 
 A utility function to apply a policy to a list of dates.
