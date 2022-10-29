@@ -1,4 +1,4 @@
-use chrono::{FixedOffset, DateTime, Duration};
+use chrono::{DateTime, Duration, FixedOffset};
 
 /// Return a list of dates to be deleted
 ///
@@ -13,7 +13,11 @@ use chrono::{FixedOffset, DateTime, Duration};
 /// * `policy` - a vector of durations
 /// * `list` - a vector of tuples of dates and objects
 ///
-pub fn police<'a, T>(now: &DateTime<FixedOffset>, policy: &[Duration], list: &'a[(DateTime<FixedOffset>, T)]) -> Vec<&'a(DateTime<FixedOffset>, T)> {
+pub fn police<'a, T>(
+    now: &DateTime<FixedOffset>,
+    policy: &[Duration],
+    list: &'a [(DateTime<FixedOffset>, T)],
+) -> Vec<&'a (DateTime<FixedOffset>, T)> {
     let mut bucket_vec: Vec<&(DateTime<FixedOffset>, T)> = Vec::new();
     let mut policy: Vec<&Duration> = policy.iter().collect();
 
@@ -61,20 +65,24 @@ pub fn police<'a, T>(now: &DateTime<FixedOffset>, policy: &[Duration], list: &'a
 
 #[cfg(test)]
 mod tests {
-    use chrono::{Utc, TimeZone};
+    use chrono::{TimeZone, Utc};
 
     use super::*;
 
     #[test]
     fn empty_policy_one_element() {
-        let list: Vec<(DateTime<FixedOffset>, String)> = vec![(Utc::now().into(), "test".to_string())];
+        let list: Vec<(DateTime<FixedOffset>, String)> =
+            vec![(Utc::now().into(), "test".to_string())];
         let result = police(&Utc::now().into(), &[], &list[..]);
         assert_eq!(result.len(), 0);
     }
 
     #[test]
     fn empty_policy_two_elements() {
-        let list: Vec<(DateTime<FixedOffset>, String)> = vec![(Utc::now().into(), "test1".to_string()), (Utc::now().into(), "test2".to_string())];
+        let list: Vec<(DateTime<FixedOffset>, String)> = vec![
+            (Utc::now().into(), "test1".to_string()),
+            (Utc::now().into(), "test2".to_string()),
+        ];
         let result = police(&Utc::now().into(), &[], &list[..]);
         assert_eq!(result.len(), 1);
         assert_eq!(result[0].1, "test1");
@@ -85,8 +93,14 @@ mod tests {
         let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
         let policy: Vec<Duration> = vec![Duration::days(1)];
         let list: Vec<(DateTime<FixedOffset>, String)> = vec![
-            (Utc.ymd(2022, 10, 22).and_hms(0, 0, 0).into(), "test1".to_string()),
-            (Utc.ymd(2022, 10, 21).and_hms(0, 0, 0).into(), "test2".to_string())
+            (
+                Utc.ymd(2022, 10, 22).and_hms(0, 0, 0).into(),
+                "test1".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 10, 21).and_hms(0, 0, 0).into(),
+                "test2".to_string(),
+            ),
         ];
         let result = police(&now.into(), &policy, &list[..]);
 
@@ -98,9 +112,18 @@ mod tests {
         let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
         let policy: Vec<Duration> = vec![Duration::days(1)];
         let list: Vec<(DateTime<FixedOffset>, String)> = vec![
-            (Utc.ymd(2022, 10, 22).and_hms(0, 0, 0).into(), "test1".to_string()),
-            (Utc.ymd(2022, 10, 21).and_hms(0, 0, 0).into(), "test2".to_string()),
-            (Utc.ymd(2022, 10, 20).and_hms(0, 0, 0).into(), "test3".to_string())
+            (
+                Utc.ymd(2022, 10, 22).and_hms(0, 0, 0).into(),
+                "test1".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 10, 21).and_hms(0, 0, 0).into(),
+                "test2".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 10, 20).and_hms(0, 0, 0).into(),
+                "test3".to_string(),
+            ),
         ];
         let result = police(&now.into(), &policy, &list[..]);
 
@@ -113,10 +136,22 @@ mod tests {
         let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
         let policy: Vec<Duration> = vec![Duration::days(1)];
         let list: Vec<(DateTime<FixedOffset>, String)> = vec![
-            (Utc.ymd(2022, 10, 22).and_hms(0, 0, 0).into(), "test1".to_string()),
-            (Utc.ymd(2022, 10, 21).and_hms(0, 0, 0).into(), "test2".to_string()),
-            (Utc.ymd(2022, 11, 20).and_hms(0, 0, 0).into(), "test3".to_string()),
-            (Utc.ymd(2022, 12, 20).and_hms(0, 0, 0).into(), "test4".to_string())
+            (
+                Utc.ymd(2022, 10, 22).and_hms(0, 0, 0).into(),
+                "test1".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 10, 21).and_hms(0, 0, 0).into(),
+                "test2".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 11, 20).and_hms(0, 0, 0).into(),
+                "test3".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 12, 20).and_hms(0, 0, 0).into(),
+                "test4".to_string(),
+            ),
         ];
         let result = police(&now.into(), &policy, &list[..]);
 
@@ -130,10 +165,22 @@ mod tests {
         let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
         let policy: Vec<Duration> = vec![Duration::days(1), Duration::days(7)];
         let list: Vec<(DateTime<FixedOffset>, String)> = vec![
-            (Utc.ymd(2022, 10, 28).and_hms(12, 0, 0).into(), "test3".to_string()),
-            (Utc.ymd(2022, 10, 26).and_hms(0, 0, 0).into(), "test4".to_string()),
-            (Utc.ymd(2022, 10, 22).and_hms(0, 0, 0).into(), "test1".to_string()),
-            (Utc.ymd(2022, 10, 21).and_hms(0, 0, 0).into(), "test2".to_string()),
+            (
+                Utc.ymd(2022, 10, 28).and_hms(12, 0, 0).into(),
+                "test3".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 10, 26).and_hms(0, 0, 0).into(),
+                "test4".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 10, 22).and_hms(0, 0, 0).into(),
+                "test1".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 10, 21).and_hms(0, 0, 0).into(),
+                "test2".to_string(),
+            ),
         ];
         let result = police(&now.into(), &policy, &list[..]);
 
@@ -146,10 +193,22 @@ mod tests {
         let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
         let policy: Vec<Duration> = vec![Duration::days(1), Duration::days(7)];
         let list: Vec<(DateTime<FixedOffset>, String)> = vec![
-            (Utc.ymd(2022, 10, 20).and_hms(0, 0, 0).into(), "test1".to_string()),
-            (Utc.ymd(2022, 10, 19).and_hms(0, 0, 0).into(), "test2".to_string()),
-            (Utc.ymd(2022, 10, 28).and_hms(12, 0, 0).into(), "test3".to_string()),
-            (Utc.ymd(2022, 10, 26).and_hms(0, 0, 0).into(), "test4".to_string()),
+            (
+                Utc.ymd(2022, 10, 20).and_hms(0, 0, 0).into(),
+                "test1".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 10, 19).and_hms(0, 0, 0).into(),
+                "test2".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 10, 28).and_hms(12, 0, 0).into(),
+                "test3".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 10, 26).and_hms(0, 0, 0).into(),
+                "test4".to_string(),
+            ),
         ];
         let result = police(&now.into(), &policy, &list[..]);
 
@@ -162,10 +221,22 @@ mod tests {
         let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
         let policy: Vec<Duration> = vec![Duration::days(1), Duration::days(7)];
         let list: Vec<(DateTime<FixedOffset>, String)> = vec![
-            (Utc.ymd(2022, 10, 28).and_hms(13, 0, 0).into(), "test4".to_string()),
-            (Utc.ymd(2022, 10, 28).and_hms(12, 0, 0).into(), "test3".to_string()),
-            (Utc.ymd(2022, 10, 20).and_hms(0, 0, 0).into(), "test1".to_string()),
-            (Utc.ymd(2022, 10, 19).and_hms(0, 0, 0).into(), "test2".to_string()),
+            (
+                Utc.ymd(2022, 10, 28).and_hms(13, 0, 0).into(),
+                "test4".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 10, 28).and_hms(12, 0, 0).into(),
+                "test3".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 10, 20).and_hms(0, 0, 0).into(),
+                "test1".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 10, 19).and_hms(0, 0, 0).into(),
+                "test2".to_string(),
+            ),
         ];
         let result = police(&now.into(), &policy, &list[..]);
 
@@ -178,9 +249,18 @@ mod tests {
         let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
         let policy: Vec<Duration> = vec![Duration::days(1), Duration::days(7)];
         let list: Vec<(DateTime<FixedOffset>, String)> = vec![
-            (Utc.ymd(2022, 10, 28).and_hms(13, 0, 0).into(), "test4".to_string()),
-            (Utc.ymd(2022, 10, 28).and_hms(12, 0, 0).into(), "test3".to_string()),
-            (Utc.ymd(2022, 10, 20).and_hms(0, 0, 0).into(), "test1".to_string()),
+            (
+                Utc.ymd(2022, 10, 28).and_hms(13, 0, 0).into(),
+                "test4".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 10, 28).and_hms(12, 0, 0).into(),
+                "test3".to_string(),
+            ),
+            (
+                Utc.ymd(2022, 10, 20).and_hms(0, 0, 0).into(),
+                "test1".to_string(),
+            ),
         ];
         let result = police(&now.into(), &policy, &list[..]);
 
