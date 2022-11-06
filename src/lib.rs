@@ -1,4 +1,4 @@
-use chrono::{DateTime, Duration, FixedOffset};
+use chrono::{DateTime, Duration, Utc};
 
 /// Return a list of dates to be deleted
 ///
@@ -14,19 +14,19 @@ use chrono::{DateTime, Duration, FixedOffset};
 /// * `list` - a vector of tuples of dates and objects
 ///
 pub fn police<'a, T>(
-    now: &DateTime<FixedOffset>,
+    now: &DateTime<Utc>,
     policy: &[Duration],
-    list: &'a [(DateTime<FixedOffset>, T)],
-) -> Vec<&'a (DateTime<FixedOffset>, T)> {
-    let mut bucket_vec: Vec<&(DateTime<FixedOffset>, T)> = Vec::new();
+    list: &'a [(DateTime<Utc>, T)],
+) -> Vec<&'a (DateTime<Utc>, T)> {
+    let mut bucket_vec: Vec<&(DateTime<Utc>, T)> = Vec::new();
     let mut policy: Vec<&Duration> = policy.iter().collect();
 
     policy.sort();
 
     let mut policy_iter = policy.iter();
     let mut policy_elem = policy_iter.next();
-    let mut res: Vec<&(DateTime<FixedOffset>, T)> = Vec::new();
-    let mut list: Vec<&(DateTime<FixedOffset>, T)> = list.iter().collect();
+    let mut res: Vec<&(DateTime<Utc>, T)> = Vec::new();
+    let mut list: Vec<&(DateTime<Utc>, T)> = list.iter().collect();
 
     list.sort_by_key(|e| e.0);
 
@@ -71,15 +71,14 @@ mod tests {
 
     #[test]
     fn empty_policy_one_element() {
-        let list: Vec<(DateTime<FixedOffset>, String)> =
-            vec![(Utc::now().into(), "test".to_string())];
+        let list: Vec<(DateTime<Utc>, String)> = vec![(Utc::now().into(), "test".to_string())];
         let result = police(&Utc::now().into(), &[], &list[..]);
         assert_eq!(result.len(), 0);
     }
 
     #[test]
     fn empty_policy_two_elements() {
-        let list: Vec<(DateTime<FixedOffset>, String)> = vec![
+        let list: Vec<(DateTime<Utc>, String)> = vec![
             (Utc::now().into(), "test1".to_string()),
             (Utc::now().into(), "test2".to_string()),
         ];
@@ -92,7 +91,7 @@ mod tests {
     fn one_policy_two_elements() {
         let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
         let policy: Vec<Duration> = vec![Duration::days(1)];
-        let list: Vec<(DateTime<FixedOffset>, String)> = vec![
+        let list: Vec<(DateTime<Utc>, String)> = vec![
             (
                 Utc.ymd(2022, 10, 22).and_hms(0, 0, 0).into(),
                 "test1".to_string(),
@@ -111,7 +110,7 @@ mod tests {
     fn one_policy_three_elements() {
         let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
         let policy: Vec<Duration> = vec![Duration::days(1)];
-        let list: Vec<(DateTime<FixedOffset>, String)> = vec![
+        let list: Vec<(DateTime<Utc>, String)> = vec![
             (
                 Utc.ymd(2022, 10, 22).and_hms(0, 0, 0).into(),
                 "test1".to_string(),
@@ -135,7 +134,7 @@ mod tests {
     fn one_policy_four_elements() {
         let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
         let policy: Vec<Duration> = vec![Duration::days(1)];
-        let list: Vec<(DateTime<FixedOffset>, String)> = vec![
+        let list: Vec<(DateTime<Utc>, String)> = vec![
             (
                 Utc.ymd(2022, 10, 22).and_hms(0, 0, 0).into(),
                 "test1".to_string(),
@@ -164,7 +163,7 @@ mod tests {
     fn two_policies_four_elements_1() {
         let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
         let policy: Vec<Duration> = vec![Duration::days(1), Duration::days(7)];
-        let list: Vec<(DateTime<FixedOffset>, String)> = vec![
+        let list: Vec<(DateTime<Utc>, String)> = vec![
             (
                 Utc.ymd(2022, 10, 28).and_hms(12, 0, 0).into(),
                 "test3".to_string(),
@@ -192,7 +191,7 @@ mod tests {
     fn two_policies_four_elements_2() {
         let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
         let policy: Vec<Duration> = vec![Duration::days(1), Duration::days(7)];
-        let list: Vec<(DateTime<FixedOffset>, String)> = vec![
+        let list: Vec<(DateTime<Utc>, String)> = vec![
             (
                 Utc.ymd(2022, 10, 20).and_hms(0, 0, 0).into(),
                 "test1".to_string(),
@@ -220,7 +219,7 @@ mod tests {
     fn two_policies_four_elements_3() {
         let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
         let policy: Vec<Duration> = vec![Duration::days(1), Duration::days(7)];
-        let list: Vec<(DateTime<FixedOffset>, String)> = vec![
+        let list: Vec<(DateTime<Utc>, String)> = vec![
             (
                 Utc.ymd(2022, 10, 28).and_hms(13, 0, 0).into(),
                 "test4".to_string(),
@@ -248,7 +247,7 @@ mod tests {
     fn two_policies_three_elements() {
         let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
         let policy: Vec<Duration> = vec![Duration::days(1), Duration::days(7)];
-        let list: Vec<(DateTime<FixedOffset>, String)> = vec![
+        let list: Vec<(DateTime<Utc>, String)> = vec![
             (
                 Utc.ymd(2022, 10, 28).and_hms(13, 0, 0).into(),
                 "test4".to_string(),
