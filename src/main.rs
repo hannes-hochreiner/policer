@@ -43,7 +43,11 @@ fn main() -> anyhow::Result<()> {
     let list = serde_json::from_str::<Vec<String>>(&input)?
         .iter()
         .map(|elem| {
-            let date_part = elem
+            let file_part = elem
+                .split("/")
+                .last()
+                .ok_or(anyhow::anyhow!("could not find file part"))?;
+            let date_part = file_part
                 .split("_")
                 .next()
                 .ok_or(anyhow::anyhow!("could not find date part"))?;
