@@ -89,15 +89,15 @@ mod tests {
 
     #[test]
     fn one_policy_two_elements() {
-        let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
+        let now = Utc.with_ymd_and_hms(2022, 10, 29, 0, 0, 0).unwrap();
         let policy: Vec<Duration> = vec![Duration::days(1)];
         let list: Vec<(DateTime<Utc>, String)> = vec![
             (
-                Utc.ymd(2022, 10, 22).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 22, 0, 0, 0).unwrap().into(),
                 "test1".to_string(),
             ),
             (
-                Utc.ymd(2022, 10, 21).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 21, 0, 0, 0).unwrap().into(),
                 "test2".to_string(),
             ),
         ];
@@ -108,19 +108,19 @@ mod tests {
 
     #[test]
     fn one_policy_three_elements() {
-        let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
+        let now = Utc.with_ymd_and_hms(2022, 10, 29, 0, 0, 0).unwrap();
         let policy: Vec<Duration> = vec![Duration::days(1)];
         let list: Vec<(DateTime<Utc>, String)> = vec![
             (
-                Utc.ymd(2022, 10, 22).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 22, 0, 0, 0).unwrap().into(),
                 "test1".to_string(),
             ),
             (
-                Utc.ymd(2022, 10, 21).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 21, 0, 0, 0).unwrap().into(),
                 "test2".to_string(),
             ),
             (
-                Utc.ymd(2022, 10, 20).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 20, 0, 0, 0).unwrap().into(),
                 "test3".to_string(),
             ),
         ];
@@ -132,23 +132,23 @@ mod tests {
 
     #[test]
     fn one_policy_four_elements() {
-        let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
+        let now = Utc.with_ymd_and_hms(2022, 10, 29, 0, 0, 0).unwrap();
         let policy: Vec<Duration> = vec![Duration::days(1)];
         let list: Vec<(DateTime<Utc>, String)> = vec![
             (
-                Utc.ymd(2022, 10, 22).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 22, 0, 0, 0).unwrap().into(),
                 "test1".to_string(),
             ),
             (
-                Utc.ymd(2022, 10, 21).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 21, 0, 0, 0).unwrap().into(),
                 "test2".to_string(),
             ),
             (
-                Utc.ymd(2022, 11, 20).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 11, 20, 0, 0, 0).unwrap().into(),
                 "test3".to_string(),
             ),
             (
-                Utc.ymd(2022, 12, 20).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 12, 20, 0, 0, 0).unwrap().into(),
                 "test4".to_string(),
             ),
         ];
@@ -161,23 +161,23 @@ mod tests {
 
     #[test]
     fn two_policies_four_elements_1() {
-        let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
+        let now = Utc.with_ymd_and_hms(2022, 10, 29, 0, 0, 0).unwrap();
         let policy: Vec<Duration> = vec![Duration::days(1), Duration::days(7)];
         let list: Vec<(DateTime<Utc>, String)> = vec![
             (
-                Utc.ymd(2022, 10, 28).and_hms(12, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 28, 12, 0, 0).unwrap().into(),
                 "test3".to_string(),
             ),
             (
-                Utc.ymd(2022, 10, 26).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 26, 0, 0, 0).unwrap().into(),
                 "test4".to_string(),
             ),
             (
-                Utc.ymd(2022, 10, 22).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 22, 0, 0, 0).unwrap().into(),
                 "test1".to_string(),
             ),
             (
-                Utc.ymd(2022, 10, 21).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 21, 0, 0, 0).unwrap().into(),
                 "test2".to_string(),
             ),
         ];
@@ -189,23 +189,23 @@ mod tests {
 
     #[test]
     fn two_policies_four_elements_2() {
-        let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
+        let now = Utc.with_ymd_and_hms(2022, 10, 29, 0, 0, 0).unwrap();
         let policy: Vec<Duration> = vec![Duration::days(1), Duration::days(7)];
         let list: Vec<(DateTime<Utc>, String)> = vec![
             (
-                Utc.ymd(2022, 10, 20).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 20, 0, 0, 0).unwrap().into(),
                 "test1".to_string(),
             ),
             (
-                Utc.ymd(2022, 10, 19).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 19, 0, 0, 0).unwrap().into(),
                 "test2".to_string(),
             ),
             (
-                Utc.ymd(2022, 10, 28).and_hms(12, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 28, 12, 0, 0).unwrap().into(),
                 "test3".to_string(),
             ),
             (
-                Utc.ymd(2022, 10, 26).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 26, 0, 0, 0).unwrap().into(),
                 "test4".to_string(),
             ),
         ];
@@ -217,23 +217,23 @@ mod tests {
 
     #[test]
     fn two_policies_four_elements_3() {
-        let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
+        let now = Utc.with_ymd_and_hms(2022, 10, 29, 0, 0, 0).unwrap();
         let policy: Vec<Duration> = vec![Duration::days(1), Duration::days(7)];
         let list: Vec<(DateTime<Utc>, String)> = vec![
             (
-                Utc.ymd(2022, 10, 28).and_hms(13, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 28, 13, 0, 0).unwrap().into(),
                 "test4".to_string(),
             ),
             (
-                Utc.ymd(2022, 10, 28).and_hms(12, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 28, 12, 0, 0).unwrap().into(),
                 "test3".to_string(),
             ),
             (
-                Utc.ymd(2022, 10, 20).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 20, 0, 0, 0).unwrap().into(),
                 "test1".to_string(),
             ),
             (
-                Utc.ymd(2022, 10, 19).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 19, 0, 0, 0).unwrap().into(),
                 "test2".to_string(),
             ),
         ];
@@ -245,19 +245,19 @@ mod tests {
 
     #[test]
     fn two_policies_three_elements() {
-        let now = Utc.ymd(2022, 10, 29).and_hms(0, 0, 0);
+        let now = Utc.with_ymd_and_hms(2022, 10, 29, 0, 0, 0).unwrap();
         let policy: Vec<Duration> = vec![Duration::days(1), Duration::days(7)];
         let list: Vec<(DateTime<Utc>, String)> = vec![
             (
-                Utc.ymd(2022, 10, 28).and_hms(13, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 28, 13, 0, 0).unwrap().into(),
                 "test4".to_string(),
             ),
             (
-                Utc.ymd(2022, 10, 28).and_hms(12, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 28, 12, 0, 0).unwrap().into(),
                 "test3".to_string(),
             ),
             (
-                Utc.ymd(2022, 10, 20).and_hms(0, 0, 0).into(),
+                Utc.with_ymd_and_hms(2022, 10, 20, 0, 0, 0).unwrap().into(),
                 "test1".to_string(),
             ),
         ];

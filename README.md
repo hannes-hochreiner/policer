@@ -32,6 +32,27 @@ It then compares a list of dates (actually tuples of dates and objects) to the p
   * either there are no more dates to be deleted
   * or the number of retained dates equals the number of buckets
 
+## CLI
+
+The crate provides a CLI program, which takes filenames (as a JSON array of strings) on stdin, applies a policy, and provides the file to be deleted (as a JSON array of strings) as output.
+The policy must be provided as a JSON array of durations.
+
+```rust
+struct Duration {
+    weeks: Option<i64>,
+    days: Option<i64>,
+    hours: Option<i64>,
+    minutes: Option<i64>,
+    seconds: Option<i64>,
+}
+```
+
+### Example
+```nushell
+'["2023-01-01T12:00:00Z_test.txt", "2023-01-01T12:05:00Z_test.txt", "2023-01-01T12:11:00Z_test.txt"]' | policer --policy '[{"hours": 3}]'
+["2023-01-01T12:00:00Z_test.txt"]
+```
+
 ## License
 
 This work is licensed under the MIT or Apache 2.0 license.
