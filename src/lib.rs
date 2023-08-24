@@ -28,7 +28,7 @@ pub fn police<'a, T>(
     let mut res: Vec<&(DateTime<Utc>, T)> = Vec::new();
     let mut list: Vec<&(DateTime<Utc>, T)> = list.iter().collect();
 
-    list.sort_by_key(|e| e.0);
+    list.sort_by_key(|&e| e.0);
 
     for &item in list.iter().rev() {
         match policy_elem {
@@ -57,7 +57,7 @@ pub fn police<'a, T>(
     }
 
     while !res.is_empty() && list.len() - res.len() <= policy.len() {
-        res.remove(0);
+        res.pop();
     }
 
     res
@@ -128,6 +128,30 @@ mod tests {
 
         assert_eq!(result.len(), 1);
         assert_eq!(result[0].1, "test3");
+    }
+
+    #[test]
+    fn one_policy_three_elements_younger() {
+        let now = Utc.with_ymd_and_hms(2022, 10, 29, 0, 0, 0).unwrap();
+        let policy: Vec<Duration> = vec![Duration::days(100)];
+        let list: Vec<(DateTime<Utc>, String)> = vec![
+            (
+                Utc.with_ymd_and_hms(2022, 10, 22, 0, 0, 0).unwrap().into(),
+                "test1".to_string(),
+            ),
+            (
+                Utc.with_ymd_and_hms(2022, 10, 21, 0, 0, 0).unwrap().into(),
+                "test2".to_string(),
+            ),
+            (
+                Utc.with_ymd_and_hms(2022, 10, 20, 0, 0, 0).unwrap().into(),
+                "test3".to_string(),
+            ),
+        ];
+        let result = police(&now.into(), &policy, &list[..]);
+
+        assert_eq!(result.len(), 1);
+        assert_eq!(result[0].1, "test2");
     }
 
     #[test]
